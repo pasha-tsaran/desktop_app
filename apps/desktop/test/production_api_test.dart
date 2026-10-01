@@ -55,10 +55,10 @@ void main() {
       final InMemorySecureStorage storage = InMemorySecureStorage();
       final ProductionActivationApiClient client =
           ProductionActivationApiClient(
-            apiClient: transport,
-            secureStorage: storage,
-            now: () => DateTime.utc(2026, 9, 5, 12),
-          );
+        apiClient: transport,
+        secureStorage: storage,
+        now: () => DateTime.utc(2026, 9, 5, 12),
+      );
 
       final ActivationResult result = await client.activate(
         ActivationKey.parse(_activationKey()),
@@ -185,21 +185,21 @@ void main() {
   test('activation maps safe HTTP and transport failures', () async {
     for (final ({int status, AccountApiFailure failure}) item
         in <({int status, AccountApiFailure failure})>[
-          (status: 401, failure: AccountApiFailure.invalidKey),
-          (status: 409, failure: AccountApiFailure.deviceLimit),
-          (status: 429, failure: AccountApiFailure.rateLimited),
-          (status: 503, failure: AccountApiFailure.server),
-        ]) {
+      (status: 401, failure: AccountApiFailure.invalidKey),
+      (status: 409, failure: AccountApiFailure.deviceLimit),
+      (status: 429, failure: AccountApiFailure.rateLimited),
+      (status: 503, failure: AccountApiFailure.server),
+    ]) {
       final ProductionActivationApiClient client =
           ProductionActivationApiClient(
-            secureStorage: InMemorySecureStorage(),
-            apiClient: _RecordingApiClient(
-              response: ApiResponse(
-                statusCode: item.status,
-                body: const <String, Object?>{},
-              ),
-            ),
-          );
+        secureStorage: InMemorySecureStorage(),
+        apiClient: _RecordingApiClient(
+          response: ApiResponse(
+            statusCode: item.status,
+            body: const <String, Object?>{},
+          ),
+        ),
+      );
       await expectLater(
         client.activate(ActivationKey.parse(_activationKey())),
         throwsA(

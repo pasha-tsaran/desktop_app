@@ -21,9 +21,9 @@ final class WindowsVpnEngine
       timeout: Duration(seconds: 90),
     ),
     Random? random,
-  }) : _secureStorage = secureStorage,
-       _transport = transport,
-       _random = random ?? Random.secure();
+  })  : _secureStorage = secureStorage,
+        _transport = transport,
+        _random = random ?? Random.secure();
 
   final SecureStorage _secureStorage;
   final ProfileIpcTransport _transport;
@@ -45,10 +45,10 @@ final class WindowsVpnEngine
 
   @override
   Set<VpnProtocol> get supportedProtocols => const <VpnProtocol>{
-    VpnProtocol.wireGuard,
-    VpnProtocol.amneziaWg,
-    VpnProtocol.vlessReality,
-  };
+        VpnProtocol.wireGuard,
+        VpnProtocol.amneziaWg,
+        VpnProtocol.vlessReality,
+      };
 
   @override
   Stream<VpnConnectionState> get states => _states.stream;
@@ -89,15 +89,15 @@ final class WindowsVpnEngine
       final String? profileHandle = switch (request.profile.protocol) {
         VpnProtocol.wireGuard => access.profileHandle,
         VpnProtocol.amneziaWg => switch (request.profile.serverId) {
-          'armenia-1' => access.amneziaWgProfileHandle,
-          'netherlands-1' => access.netherlandsAmneziaWgProfileHandle,
-          _ => null,
-        },
+            'armenia-1' => access.amneziaWgProfileHandle,
+            'netherlands-1' => access.netherlandsAmneziaWgProfileHandle,
+            _ => null,
+          },
         VpnProtocol.vlessReality => switch (request.profile.serverId) {
-          'armenia-1' => access.vlessProfileHandle,
-          'netherlands-1' => access.netherlandsVlessProfileHandle,
-          _ => null,
-        },
+            'armenia-1' => access.vlessProfileHandle,
+            'netherlands-1' => access.netherlandsVlessProfileHandle,
+            _ => null,
+          },
       };
       if (profileHandle == null || !_validIdentifier(profileHandle)) {
         _emitFailure('PROFILE_NOT_FOUND');
@@ -236,35 +236,35 @@ final class WindowsVpnEngine
     final String? handle = switch (profile.protocol) {
       VpnProtocol.wireGuard => access.profileHandle,
       VpnProtocol.amneziaWg => switch (profile.serverId) {
-        'armenia-1' => access.amneziaWgProfileHandle,
-        'netherlands-1' => access.netherlandsAmneziaWgProfileHandle,
-        _ => null,
-      },
+          'armenia-1' => access.amneziaWgProfileHandle,
+          'netherlands-1' => access.netherlandsAmneziaWgProfileHandle,
+          _ => null,
+        },
       VpnProtocol.vlessReality => switch (profile.serverId) {
-        'armenia-1' => access.vlessProfileHandle,
-        'netherlands-1' => access.netherlandsVlessProfileHandle,
-        _ => null,
-      },
+          'armenia-1' => access.vlessProfileHandle,
+          'netherlands-1' => access.netherlandsVlessProfileHandle,
+          _ => null,
+        },
     };
     return ProfileValidation(
       isValid: access.active && handle != null,
       errorCode: !access.active
           ? 'SUBSCRIPTION_REQUIRED'
           : handle == null
-          ? 'PROFILE_NOT_FOUND'
-          : null,
+              ? 'PROFILE_NOT_FOUND'
+              : null,
     );
   }
 
   @override
   Future<EngineDiagnostics> collectDiagnostics() async => EngineDiagnostics(
-    phase: _state.phase,
-    serviceAvailable: _state.errorCode != 'SERVICE_UNAVAILABLE',
-    networkAvailable: _state.phase != VpnConnectionPhase.noNetwork,
-    codes: _state.errorCode == null
-        ? const <String>[]
-        : <String>[_state.errorCode!],
-  );
+        phase: _state.phase,
+        serviceAvailable: _state.errorCode != 'SERVICE_UNAVAILABLE',
+        networkAvailable: _state.phase != VpnConnectionPhase.noNetwork,
+        codes: _state.errorCode == null
+            ? const <String>[]
+            : <String>[_state.errorCode!],
+      );
 
   Future<VpnIpcResponse> _exchange(int opcode, Uint8List commandBody) async {
     final String requestId = _identifier('request');
@@ -304,8 +304,7 @@ final class WindowsVpnEngine
         return const _AccountAccess(active: false);
       }
       final Object? subscription = decoded['subscription'];
-      final bool active =
-          subscription is Map<String, Object?> &&
+      final bool active = subscription is Map<String, Object?> &&
           subscription['status'] == SubscriptionStatus.active.name;
       return _AccountAccess(
         active: active,
@@ -363,7 +362,8 @@ final class WindowsVpnEngine
       'NO_NETWORK' => VpnConnectionPhase.noNetwork,
       'SERVER_UNAVAILABLE' => VpnConnectionPhase.serverUnavailable,
       'SUBSCRIPTION_REQUIRED' ||
-      'PROFILE_NOT_FOUND' => VpnConnectionPhase.blockedBySubscription,
+      'PROFILE_NOT_FOUND' =>
+        VpnConnectionPhase.blockedBySubscription,
       _ => VpnConnectionPhase.error,
     };
     _state = VpnConnectionState(
@@ -397,18 +397,18 @@ final class WindowsVpnEngine
       RegExp(r'^[A-Za-z0-9_-]+$').hasMatch(value);
 
   static VpnConnectionPhase _phase(int value) => switch (value) {
-    0 => VpnConnectionPhase.disconnected,
-    1 => VpnConnectionPhase.validating,
-    2 => VpnConnectionPhase.connecting,
-    3 => VpnConnectionPhase.connected,
-    4 => VpnConnectionPhase.reconnecting,
-    5 => VpnConnectionPhase.disconnecting,
-    6 => VpnConnectionPhase.blockedBySubscription,
-    7 => VpnConnectionPhase.noNetwork,
-    8 => VpnConnectionPhase.serverUnavailable,
-    9 => VpnConnectionPhase.error,
-    _ => throw const ProfileProvisioningException('INVALID_RESPONSE'),
-  };
+        0 => VpnConnectionPhase.disconnected,
+        1 => VpnConnectionPhase.validating,
+        2 => VpnConnectionPhase.connecting,
+        3 => VpnConnectionPhase.connected,
+        4 => VpnConnectionPhase.reconnecting,
+        5 => VpnConnectionPhase.disconnecting,
+        6 => VpnConnectionPhase.blockedBySubscription,
+        7 => VpnConnectionPhase.noNetwork,
+        8 => VpnConnectionPhase.serverUnavailable,
+        9 => VpnConnectionPhase.error,
+        _ => throw const ProfileProvisioningException('INVALID_RESPONSE'),
+      };
 
   static VpnStatistics _emptyStatistics() =>
       VpnStatistics(bytesReceived: 0, bytesSent: 0, measuredAt: DateTime.now());

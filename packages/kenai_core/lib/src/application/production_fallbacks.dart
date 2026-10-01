@@ -80,11 +80,11 @@ final class UnavailableVpnEngine implements VpnEngine {
 
   @override
   Future<EngineDiagnostics> collectDiagnostics() async => EngineDiagnostics(
-    phase: _state.phase,
-    serviceAvailable: false,
-    networkAvailable: true,
-    codes: const <String>['ENGINE_NOT_INSTALLED'],
-  );
+        phase: _state.phase,
+        serviceAvailable: false,
+        networkAvailable: true,
+        codes: const <String>['ENGINE_NOT_INSTALLED'],
+      );
 }
 
 /// Direct production exits. A selected location must have its own VPN profile.
@@ -92,9 +92,9 @@ final class ArmeniaMvpServerRepository implements ServerRepository {
   ArmeniaMvpServerRepository({
     ServerLatencyProbe? latencyProbe,
     ServerLatencyProbe? netherlandsLatencyProbe,
-  }) : _latencyProbe = latencyProbe ?? const UnavailableServerLatencyProbe(),
-       _netherlandsLatencyProbe =
-           netherlandsLatencyProbe ?? const UnavailableServerLatencyProbe();
+  })  : _latencyProbe = latencyProbe ?? const UnavailableServerLatencyProbe(),
+        _netherlandsLatencyProbe =
+            netherlandsLatencyProbe ?? const UnavailableServerLatencyProbe();
 
   final ServerLatencyProbe _latencyProbe;
   final ServerLatencyProbe _netherlandsLatencyProbe;
@@ -146,8 +146,7 @@ final class ArmeniaMvpServerRepository implements ServerRepository {
   }) async {
     final String normalized = query.trim().toLowerCase();
     return <VpnServer>[_server, _netherlands].where((server) {
-      final bool matchesQuery =
-          normalized.isEmpty ||
+      final bool matchesQuery = normalized.isEmpty ||
           server.countryName.toLowerCase().contains(normalized) ||
           server.city.toLowerCase().contains(normalized);
       return matchesQuery &&
@@ -181,9 +180,8 @@ final class ArmeniaMvpServerRepository implements ServerRepository {
   @override
   Future<Duration?> ping(String serverId) async {
     _requireCurrent(serverId);
-    final VpnServer server = serverId == _netherlands.id
-        ? _netherlands
-        : _server;
+    final VpnServer server =
+        serverId == _netherlands.id ? _netherlands : _server;
     final ServerStatus previous = server.status;
     final VpnServer updated = server.copyWith(
       status: ServerStatus(
@@ -193,11 +191,10 @@ final class ArmeniaMvpServerRepository implements ServerRepository {
         loadPercent: previous.loadPercent,
       ),
     );
-    final Duration? latency =
-        await (serverId == _server.id
-                ? _latencyProbe
-                : _netherlandsLatencyProbe)
-            .measure();
+    final Duration? latency = await (serverId == _server.id
+            ? _latencyProbe
+            : _netherlandsLatencyProbe)
+        .measure();
     if (serverId == _netherlands.id) {
       _netherlands = updated.copyWith(
         status: updated.status.copyWith(latency: latency),

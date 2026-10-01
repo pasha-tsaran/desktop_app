@@ -54,8 +54,8 @@ final class DartIoApiClient implements ApiClient {
         outgoing.add(utf8.encode(jsonEncode(request.body)));
       }
       final HttpClientResponse incoming = await outgoing.close().timeout(
-        requestTimeout,
-      );
+            requestTimeout,
+          );
       final BytesBuilder bytes = BytesBuilder(copy: false);
       await for (final List<int> chunk in incoming.timeout(requestTimeout)) {
         if (bytes.length + chunk.length > _maximumResponseBytes) {
@@ -100,12 +100,12 @@ final class DartIoApiClient implements ApiClient {
   }
 
   static String _method(ApiMethod method) => switch (method) {
-    ApiMethod.get => 'GET',
-    ApiMethod.post => 'POST',
-    ApiMethod.put => 'PUT',
-    ApiMethod.patch => 'PATCH',
-    ApiMethod.delete => 'DELETE',
-  };
+        ApiMethod.get => 'GET',
+        ApiMethod.post => 'POST',
+        ApiMethod.put => 'PUT',
+        ApiMethod.patch => 'PATCH',
+        ApiMethod.delete => 'DELETE',
+      };
 
   static Map<String, Object?> _decodeBody(
     List<int> bytes, {
@@ -126,9 +126,9 @@ final class ProductionActivationApiClient implements ActivationApiClient {
     required ApiClient apiClient,
     required SecureStorage secureStorage,
     DateTime Function()? now,
-  }) : _apiClient = apiClient,
-       _secureStorage = secureStorage,
-       _now = now ?? DateTime.now;
+  })  : _apiClient = apiClient,
+        _secureStorage = secureStorage,
+        _now = now ?? DateTime.now;
 
   static const String _installationIdKey = 'vpn.installation_id';
   final ApiClient _apiClient;
@@ -156,7 +156,8 @@ final class ProductionActivationApiClient implements ActivationApiClient {
     } on ApiClientException catch (error) {
       final AccountApiFailure failure = switch (error.failure) {
         ApiTransportFailure.noNetwork ||
-        ApiTransportFailure.timeout => AccountApiFailure.noNetwork,
+        ApiTransportFailure.timeout =>
+          AccountApiFailure.noNetwork,
         _ => AccountApiFailure.server,
       };
       throw AccountApiException(failure);
@@ -197,7 +198,7 @@ final class ProductionActivationApiClient implements ActivationApiClient {
       }
       final Map<String, Object?> locations =
           (locationsValue as Map<String, Object?>?) ??
-          const <String, Object?>{};
+              const <String, Object?>{};
       final Object? netherlandsValue = locations['netherlands-1'];
       if (netherlandsValue != null &&
           netherlandsValue is! Map<String, Object?>) {
@@ -224,15 +225,14 @@ final class ProductionActivationApiClient implements ActivationApiClient {
       }
       final Map<String, Object?> subscription =
           (subscriptionValue as Map<String, Object?>?) ??
-          const <String, Object?>{};
+              const <String, Object?>{};
       final String? expiresText = _optionalString(
         subscription,
         'expires_at',
         maximumLength: 64,
       );
-      final DateTime? expiresAt = expiresText == null
-          ? null
-          : DateTime.tryParse(expiresText);
+      final DateTime? expiresAt =
+          expiresText == null ? null : DateTime.tryParse(expiresText);
       if (expiresText != null && expiresAt == null) {
         throw const FormatException('Invalid subscription expiry');
       }

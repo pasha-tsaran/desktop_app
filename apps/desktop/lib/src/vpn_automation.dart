@@ -42,9 +42,8 @@ final class VpnAutomation {
   Future<void> start() async {
     final config = await settings.load();
     final catalog = await servers.getServers();
-    final selected = catalog
-        .where((s) => s.id == config.defaultServerId)
-        .firstOrNull;
+    final selected =
+        catalog.where((s) => s.id == config.defaultServerId).firstOrNull;
     if (selected != null) await servers.selectServer(selected.id);
     await platform.setLaunchAtLogin(config.launchAtLogin);
     try {
@@ -91,8 +90,8 @@ final class VpnAutomation {
         await account.restoreSession() != null) {
       final target = config.autoConnect == AutoConnectMode.recommendedServer
           ? catalog
-                .where((s) => s.isRecommended && s.canAttemptConnection)
-                .firstOrNull
+              .where((s) => s.isRecommended && s.canAttemptConnection)
+              .firstOrNull
           : selected;
       final server =
           target ?? catalog.where((s) => s.canAttemptConnection).firstOrNull;
@@ -144,16 +143,16 @@ final class VpnAutomation {
     final requested = explicit ?? preferred;
     final candidates = requested == null
         ? (server.id == 'netherlands-1'
-              ? <VpnProtocol>[
-                  VpnProtocol.amneziaWg,
-                  VpnProtocol.vlessReality,
-                  VpnProtocol.wireGuard,
-                ]
-              : <VpnProtocol>[
-                  VpnProtocol.vlessReality,
-                  VpnProtocol.amneziaWg,
-                  VpnProtocol.wireGuard,
-                ])
+            ? <VpnProtocol>[
+                VpnProtocol.amneziaWg,
+                VpnProtocol.vlessReality,
+                VpnProtocol.wireGuard,
+              ]
+            : <VpnProtocol>[
+                VpnProtocol.vlessReality,
+                VpnProtocol.amneziaWg,
+                VpnProtocol.wireGuard,
+              ])
         : <VpnProtocol>[requested];
     final current = await engine.status();
     if (!_isCurrent(generation)) return;
@@ -203,8 +202,7 @@ final class VpnAutomation {
         return;
       }
       if (result.phase == VpnConnectionPhase.blockedBySubscription &&
-          result.errorCode != 'PROFILE_NOT_FOUND')
-        return;
+          result.errorCode != 'PROFILE_NOT_FOUND') return;
     }
     if (!attempted) throw StateError('No compatible VPN profile is available');
   }
@@ -263,8 +261,7 @@ final class VpnAutomation {
         if (generation != _generation || _disposed) return;
         if (event == DesktopEvent.resume) {
           _resuming = false;
-          _wanted =
-              _wantedBeforeSleep &&
+          _wanted = _wantedBeforeSleep &&
               config.sleepBehavior == SleepBehavior.reconnect;
         }
         if (event == DesktopEvent.resume &&
@@ -274,14 +271,12 @@ final class VpnAutomation {
         }
         if (event == DesktopEvent.networkChanged &&
             !config.reconnectOnNetworkChange &&
-            !_startupWaiting)
-          return;
+            !_startupWaiting) return;
         final target = _lastServer;
         if (!_wanted ||
             _sleeping ||
             generation != _generation ||
-            target == null)
-          return;
+            target == null) return;
         await _serialized(
           () => _connect(
             target,

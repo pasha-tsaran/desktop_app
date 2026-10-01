@@ -26,9 +26,9 @@ final class SecureAccountRepository implements AccountRepository {
     required ActivationApiClient apiClient,
     required SecureStorage secureStorage,
     VpnProfileProvisioner? profileProvisioner,
-  }) : _apiClient = apiClient,
-       _secureStorage = secureStorage,
-       _profileProvisioner = profileProvisioner;
+  })  : _apiClient = apiClient,
+        _secureStorage = secureStorage,
+        _profileProvisioner = profileProvisioner;
 
   static const String _activationKey = SecureAccountStorageKeys.activationKey;
   static const String _session = SecureAccountStorageKeys.session;
@@ -112,8 +112,8 @@ final class SecureAccountRepository implements AccountRepository {
       final String? amneziaWg = result.vpnCredentials[VpnProtocol.amneziaWg];
       if (_profileProvisioner != null && amneziaWg != null) {
         try {
-          provisionedAmneziaWgHandle = await _profileProvisioner
-              .provisionAmneziaWg(amneziaWg);
+          provisionedAmneziaWgHandle =
+              await _profileProvisioner.provisionAmneziaWg(amneziaWg);
           await _secureStorage.write(
             key: _amneziaWgProfileHandle,
             value: provisionedAmneziaWgHandle,
@@ -140,8 +140,8 @@ final class SecureAccountRepository implements AccountRepository {
         _profileProvisioner == null ? vless : null,
       );
       if (_profileProvisioner != null && vless != null) {
-        provisionedVlessHandle = await _profileProvisioner
-            .provisionVlessReality(vless);
+        provisionedVlessHandle =
+            await _profileProvisioner.provisionVlessReality(vless);
         await _secureStorage.write(
           key: _vlessProfileHandle,
           value: provisionedVlessHandle,
@@ -198,8 +198,8 @@ final class SecureAccountRepository implements AccountRepository {
   }) async {
     if (serverId == 'netherlands-1') {
       if (protocol == VpnProtocol.vlessReality) {
-        final Future<bool> refresh = _netherlandsVlessRefresh ??=
-            _fetchNetherlandsVless();
+        final Future<bool> refresh =
+            _netherlandsVlessRefresh ??= _fetchNetherlandsVless();
         try {
           return await refresh;
         } finally {
@@ -209,8 +209,8 @@ final class SecureAccountRepository implements AccountRepository {
         }
       }
       if (protocol == VpnProtocol.amneziaWg) {
-        final Future<bool> refresh = _netherlandsAmneziaWgRefresh ??=
-            _fetchNetherlandsAmneziaWg();
+        final Future<bool> refresh =
+            _netherlandsAmneziaWgRefresh ??= _fetchNetherlandsAmneziaWg();
         try {
           return await refresh;
         } finally {
@@ -306,9 +306,8 @@ final class SecureAccountRepository implements AccountRepository {
   }
 
   Future<bool> _fetchMissingAmneziaWg() async {
-    final String credentialKey = _profileProvisioner == null
-        ? _amneziaWg
-        : _amneziaWgProfileHandle;
+    final String credentialKey =
+        _profileProvisioner == null ? _amneziaWg : _amneziaWgProfileHandle;
     if (await _secureStorage.read(credentialKey) != null) return true;
     final String? storedKey = await _secureStorage.read(_activationKey);
     final String? encodedSession = await _secureStorage.read(_session);
@@ -405,22 +404,22 @@ final class SecureAccountRepository implements AccountRepository {
   }
 
   static String _encode(AccountSession session) => jsonEncode(<String, Object?>{
-    'account': <String, Object?>{
-      'id': session.account.id,
-      'email': session.account.email,
-      'telegram_username': session.account.telegramUsername,
-      'phone_number': session.account.phoneNumber,
-    },
-    'subscription': <String, Object?>{
-      'status': session.subscription.status.name,
-      'plan_name': session.subscription.planName,
-      'expires_at': session.subscription.expiresAt?.toIso8601String(),
-      'device_limit': session.subscription.deviceLimit,
-      'last_verified_at': session.subscription.lastVerifiedAt
-          ?.toIso8601String(),
-    },
-    'activation_key_mask': session.activationKeyMask,
-  });
+        'account': <String, Object?>{
+          'id': session.account.id,
+          'email': session.account.email,
+          'telegram_username': session.account.telegramUsername,
+          'phone_number': session.account.phoneNumber,
+        },
+        'subscription': <String, Object?>{
+          'status': session.subscription.status.name,
+          'plan_name': session.subscription.planName,
+          'expires_at': session.subscription.expiresAt?.toIso8601String(),
+          'device_limit': session.subscription.deviceLimit,
+          'last_verified_at':
+              session.subscription.lastVerifiedAt?.toIso8601String(),
+        },
+        'activation_key_mask': session.activationKeyMask,
+      });
 
   static AccountSession _decode(String encoded) {
     final Map<String, Object?> data =

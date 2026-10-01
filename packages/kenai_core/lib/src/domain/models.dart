@@ -15,20 +15,22 @@ enum VpnConnectionPhase {
 
 extension VpnConnectionPhaseProperties on VpnConnectionPhase {
   bool get isBusy => switch (this) {
-    VpnConnectionPhase.validating ||
-    VpnConnectionPhase.connecting ||
-    VpnConnectionPhase.reconnecting ||
-    VpnConnectionPhase.disconnecting => true,
-    _ => false,
-  };
+        VpnConnectionPhase.validating ||
+        VpnConnectionPhase.connecting ||
+        VpnConnectionPhase.reconnecting ||
+        VpnConnectionPhase.disconnecting =>
+          true,
+        _ => false,
+      };
 
   bool get isFailure => switch (this) {
-    VpnConnectionPhase.blockedBySubscription ||
-    VpnConnectionPhase.noNetwork ||
-    VpnConnectionPhase.serverUnavailable ||
-    VpnConnectionPhase.error => true,
-    _ => false,
-  };
+        VpnConnectionPhase.blockedBySubscription ||
+        VpnConnectionPhase.noNetwork ||
+        VpnConnectionPhase.serverUnavailable ||
+        VpnConnectionPhase.error =>
+          true,
+        _ => false,
+      };
 }
 
 enum SubscriptionStatus { active, expired, suspended }
@@ -236,17 +238,17 @@ final class VpnServer {
       status.internetReachability != InternetReachability.unreachable;
 
   VpnServer copyWith({ServerStatus? status, bool? isFavorite}) => VpnServer(
-    id: id,
-    countryCode: countryCode,
-    countryName: countryName,
-    city: city,
-    name: name,
-    protocols: protocols,
-    status: status ?? this.status,
-    isRecommended: isRecommended,
-    isFavorite: isFavorite ?? this.isFavorite,
-    isTest: isTest,
-  );
+        id: id,
+        countryCode: countryCode,
+        countryName: countryName,
+        city: city,
+        name: name,
+        protocols: protocols,
+        status: status ?? this.status,
+        isRecommended: isRecommended,
+        isFavorite: isFavorite ?? this.isFavorite,
+        isTest: isTest,
+      );
 }
 
 final class ServerStatus {
@@ -270,12 +272,12 @@ final class ServerStatus {
       internetReachability == InternetReachability.reachable;
 
   ServerStatus copyWith({Duration? latency}) => ServerStatus(
-    operational: operational,
-    internetReachability: internetReachability,
-    lastUpdatedAt: DateTime.now().toUtc(),
-    latency: latency ?? this.latency,
-    loadPercent: loadPercent,
-  );
+        operational: operational,
+        internetReachability: internetReachability,
+        lastUpdatedAt: DateTime.now().toUtc(),
+        latency: latency ?? this.latency,
+        loadPercent: loadPercent,
+      );
 }
 
 final class Device {
@@ -330,12 +332,12 @@ final class VpnConnectionState {
   });
 
   const VpnConnectionState.disconnected()
-    : phase = VpnConnectionPhase.disconnected,
-      serverId = null,
-      protocol = null,
-      connectedAt = null,
-      killSwitchActive = false,
-      errorCode = null;
+      : phase = VpnConnectionPhase.disconnected,
+        serverId = null,
+        protocol = null,
+        connectedAt = null,
+        killSwitchActive = false,
+        errorCode = null;
 
   final VpnConnectionPhase phase;
   final String? serverId;
@@ -409,10 +411,10 @@ final class ClientPlatformCapabilities {
   });
 
   const ClientPlatformCapabilities.unavailable()
-    : supportsAutoConnect = false,
-      supportsLaunchAtLogin = false,
-      supportsMinimizeAfterConnect = false,
-      supportsTray = false;
+      : supportsAutoConnect = false,
+        supportsLaunchAtLogin = false,
+        supportsMinimizeAfterConnect = false,
+        supportsTray = false;
 
   final bool supportsAutoConnect;
   final bool supportsLaunchAtLogin;
@@ -432,13 +434,13 @@ final class SpeedTestState {
   });
 
   const SpeedTestState.idle()
-    : phase = SpeedTestPhase.idle,
-      serverId = null,
-      latencySamples = const <Duration>[],
-      downloadMbps = null,
-      uploadMbps = null,
-      estimatedBytesUsed = 0,
-      errorCode = null;
+      : phase = SpeedTestPhase.idle,
+        serverId = null,
+        latencySamples = const <Duration>[],
+        downloadMbps = null,
+        uploadMbps = null,
+        estimatedBytesUsed = 0,
+        errorCode = null;
 
   final SpeedTestPhase phase;
   final String? serverId;
@@ -539,14 +541,15 @@ final class DiagnosticLogEntry {
     String? code,
     String? message,
     Map<String, Object?>? fields,
-  }) => DiagnosticLogEntry(
-    occurredAt: occurredAt,
-    category: category,
-    level: level,
-    code: code ?? this.code,
-    message: message ?? this.message,
-    fields: fields ?? this.fields,
-  );
+  }) =>
+      DiagnosticLogEntry(
+        occurredAt: occurredAt,
+        category: category,
+        level: level,
+        code: code ?? this.code,
+        message: message ?? this.message,
+        fields: fields ?? this.fields,
+      );
 }
 
 final class DiagnosticLogInput {
@@ -624,20 +627,20 @@ final class AppSettings {
   });
 
   const AppSettings.defaults()
-    : theme = ThemePreference.system,
-      locale = 'ru',
-      protocol = ProtocolPreference.automatic,
-      dns = DnsPreference.automatic,
-      autoConnect = AutoConnectMode.disabled,
-      defaultServerId = 'am-evn-01',
-      killSwitch = false,
-      reconnectOnNetworkChange = false,
-      sleepBehavior = SleepBehavior.disconnect,
-      launchAtLogin = false,
-      minimizeAfterConnect = false,
-      autoUpdate = false,
-      trayEnabled = false,
-      sendDiagnostics = false;
+      : theme = ThemePreference.system,
+        locale = 'ru',
+        protocol = ProtocolPreference.automatic,
+        dns = DnsPreference.automatic,
+        autoConnect = AutoConnectMode.disabled,
+        defaultServerId = 'am-evn-01',
+        killSwitch = false,
+        reconnectOnNetworkChange = false,
+        sleepBehavior = SleepBehavior.disconnect,
+        launchAtLogin = false,
+        minimizeAfterConnect = false,
+        autoUpdate = false,
+        trayEnabled = false,
+        sendDiagnostics = false;
 
   final ThemePreference theme;
   final String locale;
@@ -669,23 +672,24 @@ final class AppSettings {
     bool? autoUpdate,
     bool? trayEnabled,
     bool? sendDiagnostics,
-  }) => AppSettings(
-    theme: theme ?? this.theme,
-    locale: locale ?? this.locale,
-    protocol: protocol ?? this.protocol,
-    dns: dns ?? this.dns,
-    autoConnect: autoConnect ?? this.autoConnect,
-    defaultServerId: defaultServerId ?? this.defaultServerId,
-    killSwitch: killSwitch ?? this.killSwitch,
-    reconnectOnNetworkChange:
-        reconnectOnNetworkChange ?? this.reconnectOnNetworkChange,
-    sleepBehavior: sleepBehavior ?? this.sleepBehavior,
-    launchAtLogin: launchAtLogin ?? this.launchAtLogin,
-    minimizeAfterConnect: minimizeAfterConnect ?? this.minimizeAfterConnect,
-    autoUpdate: autoUpdate ?? this.autoUpdate,
-    trayEnabled: trayEnabled ?? this.trayEnabled,
-    sendDiagnostics: sendDiagnostics ?? this.sendDiagnostics,
-  );
+  }) =>
+      AppSettings(
+        theme: theme ?? this.theme,
+        locale: locale ?? this.locale,
+        protocol: protocol ?? this.protocol,
+        dns: dns ?? this.dns,
+        autoConnect: autoConnect ?? this.autoConnect,
+        defaultServerId: defaultServerId ?? this.defaultServerId,
+        killSwitch: killSwitch ?? this.killSwitch,
+        reconnectOnNetworkChange:
+            reconnectOnNetworkChange ?? this.reconnectOnNetworkChange,
+        sleepBehavior: sleepBehavior ?? this.sleepBehavior,
+        launchAtLogin: launchAtLogin ?? this.launchAtLogin,
+        minimizeAfterConnect: minimizeAfterConnect ?? this.minimizeAfterConnect,
+        autoUpdate: autoUpdate ?? this.autoUpdate,
+        trayEnabled: trayEnabled ?? this.trayEnabled,
+        sendDiagnostics: sendDiagnostics ?? this.sendDiagnostics,
+      );
 }
 
 final class ApiRequest {
@@ -722,9 +726,9 @@ final class PaymentState {
   const PaymentState({required this.phase, this.session, this.failure});
 
   const PaymentState.idle()
-    : phase = PaymentPhase.idle,
-      session = null,
-      failure = null;
+      : phase = PaymentPhase.idle,
+        session = null,
+        failure = null;
 
   final PaymentPhase phase;
   final PaymentSession? session;
