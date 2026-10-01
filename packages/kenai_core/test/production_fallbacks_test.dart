@@ -35,7 +35,10 @@ void main() {
     expect(armenia.isAvailable, isFalse);
     expect(armenia.canAttemptConnection, isTrue);
     expect(netherlands.countryCode, 'NL');
-    expect(netherlands.protocols, <VpnProtocol>{VpnProtocol.vlessReality});
+    expect(netherlands.protocols, <VpnProtocol>{
+      VpnProtocol.amneziaWg,
+      VpnProtocol.vlessReality,
+    });
     await repository.selectServer('netherlands-1');
     expect((await repository.getSelectedServer())?.id, 'netherlands-1');
     expect(
