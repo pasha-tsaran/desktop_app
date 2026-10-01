@@ -1,0 +1,33 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+dist/
+coverage/
+tmp/
+
+# Rust (Cargo.lock is intentionally tracked for this application workspace)
+target/
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Local secrets and generated VPN data
+*.env
+*.key
+*.conf
+*.diagnostics.zip
+*.db
+*.log
+*.zip
+local_data/
+output/dns-live-*.txt
+
+# Local Codex collaboration instructions
+AGENTS.md

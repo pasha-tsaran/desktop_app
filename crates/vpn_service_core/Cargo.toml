@@ -1,0 +1,11 @@
+[package]
+name = "vpn_service_core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+vpn_contracts = { path = "../vpn_contracts" }
+
+[lints]
+workspace = true

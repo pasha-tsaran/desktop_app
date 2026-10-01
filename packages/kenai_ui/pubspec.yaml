@@ -1,0 +1,13 @@
+name: kenai_ui
+description: Shared Kenai VPN design tokens and UI primitives.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter

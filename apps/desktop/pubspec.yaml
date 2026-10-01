@@ -1,0 +1,34 @@
+name: kenai_vpn_desktop
+description: Kenai VPN Windows-first desktop client.
+publish_to: none
+version: 2.3.4+20
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^11.0.0
+  ffi: ^2.2.0
+  win32: ^6.4.0
+  pdfrx: 2.6.1
+  kenai_core:
+    path: ../../packages/kenai_core
+  kenai_ui:
+    path: ../../packages/kenai_ui
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/legal/privacy-policy-ru.pdf
+    - assets/visual/globe.png
+    - assets/visual/armenia-map.png
+    - assets/visual/orb.png
+    - assets/branding/

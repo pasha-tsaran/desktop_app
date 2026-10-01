@@ -1,0 +1,12 @@
+name: kenai_vpn_workspace
+description: Workspace marker for the Kenai VPN client scaffold.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+workspace:
+  - apps/desktop
+  - packages/kenai_core
+  - packages/kenai_ui
