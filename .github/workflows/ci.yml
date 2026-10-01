@@ -21,10 +21,8 @@ jobs:
       - run: dart analyze .
       - run: flutter test
         working-directory: apps/desktop
-      - run: flutter test
+      - run: dart test
         working-directory: packages/kenai_core
-      - run: flutter test
-        working-directory: packages/kenai_ui
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace --locked

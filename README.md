@@ -35,9 +35,7 @@ Debug-сборка использует демонстрационные ада�
 cd apps/desktop
 flutter test
 cd ../../packages/kenai_core
-flutter test
-cd ../kenai_ui
-flutter test
+dart test
 cd ../..
 cargo test --workspace --locked
 ```
